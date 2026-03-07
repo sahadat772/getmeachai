@@ -10,9 +10,11 @@ export async function PUT(req) {
       return NextResponse.json({ message: 'অনুমতি নেই' }, { status: 401 });
     }
 
-    const { name, username, bio, bkashNumber, nagadNumber } = await req.json();
+    const { name, username, bio, bkashNumber, nagadNumber, image } = await req.json();
 
     await connectDB();
+
+    
 
     // username unique check
     const existing = await User.findOne({
@@ -28,7 +30,7 @@ export async function PUT(req) {
 
     await User.findOneAndUpdate(
       { email: session.user.email },
-      { name, username, bio, bkashNumber, nagadNumber }
+      { name, username, bio, bkashNumber, nagadNumber, coverImage }
     );
 
     return NextResponse.json({ message: 'প্রোফাইল আপডেট হয়েছে' });

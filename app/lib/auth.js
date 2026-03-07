@@ -8,10 +8,24 @@ import User from '../models/User';
 export const { handlers, signIn, signOut, auth } = NextAuth({
   trustHost: true,
   secret: process.env.NEXTAUTH_SECRET,
+  session: {
+    strategy: 'jwt',
+  },
+  pages: {
+    signIn: '/login',
+    error: '/login',
+  },
   providers: [
     Google({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      authorization: {
+        params: {
+          prompt: 'consent',
+          access_type: 'offline',
+          response_type: 'code',
+        },
+      },
     }),
     Credentials({
       name: 'credentials',
@@ -41,32 +55,34 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
   callbacks: {
-    async signIn({ user, account }) {
+    async signIn({ user, account, profile }) {
       if (account?.provider === 'google') {
         try {
           await connectDB();
           const existing = await User.findOne({ email: user.email });
           if (!existing) {
+            const username = user.email.split('@')[0].replace(/[^a-zA-Z0-9]/g, '');
             await User.create({
               name: user.name,
               email: user.email,
               image: user.image,
-              username: user.email.split('@')[0],
+              username: username,
             });
           }
+          return true;
         } catch (error) {
-          console.error('SignIn error:', error);
+          console.error('Google SignIn error:', error);
           return false;
         }
       }
       return true;
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user, account }) {
       if (user) {
         token.id = user.id;
         token.username = user.username;
       }
-      if (!token.username) {
+      if (account?.provider === 'google' && !token.username) {
         try {
           await connectDB();
           const dbUser = await User.findOne({ email: token.email });
@@ -87,12 +103,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
       return session;
     },
-  },
-  pages: {
-    signIn: '/login',
-  },
-  session: {
-    strategy: 'jwt',
   },
 });
 

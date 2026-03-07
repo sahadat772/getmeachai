@@ -22,7 +22,7 @@ export default function HomePage() {
             সরাসরি, সহজে, আনন্দের সাথে।
           </p>
           <div className="flex gap-4 justify-center flex-wrap">
-            <Link href="/signup" className="bg-amber-400 hover:bg-amber-500 text-gray-900 font-bold text-lg px-8 py-4 rounded-xl transition hover:-translate-y-0.5 hover:shadow-[0_8px_30px_rgba(251,191,36,0.4)]">
+            <Link href="/signup" className="bg-amber-400 hover:bg-amber-500 text-gray-300 font-bold text-lg px-8 py-4 rounded-xl transition hover:-translate-y-0.5 hover:shadow-[0_8px_30px_rgba(251,191,36,0.4)]">
               শুরু করুন ☕
             </Link>
             <Link href="/login" className="border border-gray-700 hover:border-amber-400 text-gray-300 hover:text-amber-400 font-semibold text-lg px-8 py-4 rounded-xl transition">
@@ -52,7 +52,7 @@ export default function HomePage() {
       {/* HOW IT WORKS */}
       <section className="py-20 px-4">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">
+          <h2 className="text-3xl font-bold text-center mb-12 text-white">
             কিভাবে <span className="text-amber-400">কাজ করে?</span>
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -62,8 +62,8 @@ export default function HomePage() {
               { icon: '💰', title: 'সাপোর্ট পান', desc: 'ভক্তরা bKash বা Nagad দিয়ে সরাসরি আপনাকে সাপোর্ট করুন।' },
             ].map((item) => (
               <div key={item.title} className="bg-gray-900 border border-gray-800 rounded-2xl p-8 text-center hover:border-amber-400/40 transition">
-                <div className="text-5xl mb-4">{item.icon}</div>
-                <h3 className="text-xl font-bold mb-3">{item.title}</h3>
+                <div className="text-5xl mb-4 text-amber-400">{item.icon}</div>
+                <h3 className="text-xl font-bold mb-3 text-white">{item.title}</h3>
                 <p className="text-gray-400 text-sm leading-relaxed">{item.desc}</p>
               </div>
             ))}

@@ -1,10 +1,13 @@
 import Link from "next/link";
+import Navbar from "./components/ui/Navbar";
+import Footer from "./components/ui/Footer";
 
 export default function HomePage() {
   return (
     <div className="bg-gray-950 text-gray-100">
+      <Navbar />
       {/* HERO */}
-      <section className="relative overflow-hidden py-24 px-4 text-center">
+      <section className="relative overflow-hidden py-24 px-4 text-center bg-linear-to-r from-gray-900/40 to-purple-600/30">
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
@@ -12,13 +15,13 @@ export default function HomePage() {
               "radial-gradient(ellipse 800px 500px at 50% -100px, rgba(251,191,36,0.12), transparent)",
           }}
         />
-        <div className="max-w-3xl mx-auto relative">
+        <div className="max-w-3xl mx-auto relative ">
           <span className="inline-flex items-center gap-2 bg-amber-400/10 border border-amber-400/20 text-amber-300 text-sm px-4 py-1.5 rounded-full mb-6">
             🇧🇩 বাংলাদেশের ক্রিয়েটরদের জন্য তৈরি
           </span>
           <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-6">
             আপনার পছন্দের{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-amber-500">
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-amber-300 to-amber-500">
               ক্রিয়েটরকে সাপোর্ট করুন
             </span>
           </h1>
@@ -103,10 +106,10 @@ export default function HomePage() {
       </section>
 
       {/* PAYMENT METHODS */}
-      <section className="py-16 px-4 bg-gray-900/50">
+      <section className="py-16 px-4 bg-linear-to-r from-blue-900/60 to-orange-500/45">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-2xl font-bold mb-4">সাপোর্টেড পেমেন্ট</h2>
-          <p className="text-gray-400 text-sm mb-8">
+          <h2 className="text-2xl font-bold mb-4 text-emerald-400">সাপোর্টেড পেমেন্ট</h2>
+          <p className="text-cyan-300 text-sm mb-8">
             বাংলাদেশের সবচেয়ে জনপ্রিয় মোবাইল পেমেন্ট সিস্টেম
           </p>
           <div className="flex gap-4 justify-center flex-wrap">
@@ -122,8 +125,8 @@ export default function HomePage() {
 
       {/* CTA */}
       <section className="py-24 px-4 text-center">
-        <div className="max-w-2xl mx-auto bg-gradient-to-r from-amber-400/10 to-amber-600/10 border border-amber-400/20 rounded-3xl p-12">
-          <h2 className="text-3xl font-bold mb-4">আজই শুরু করুন ☕</h2>
+        <div className="max-w-2xl mx-auto bg-linear-to-r from-amber-400/10 to-amber-600/40 border border-amber-400/20 rounded-3xl p-12">
+          <h2 className="text-3xl font-bold mb-4 text-purple-500">আজই শুরু করুন ☕</h2>
           <p className="text-gray-400 mb-8">
             বিনামূল্যে অ্যাকাউন্ট তৈরি করুন এবং আপনার ক্রিয়েটর জার্নি শুরু
             করুন।
@@ -136,6 +139,7 @@ export default function HomePage() {
           </Link>
         </div>
       </section>
+      <Footer />
     </div>
   );
 }

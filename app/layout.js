@@ -22,9 +22,11 @@ export default function RootLayout({ children }) {
       <body
         className={`${hind.className} bg-gray-950 text-gray-100 min-h-screen flex flex-col`}
       >
-        {/* <Navbar/> */}
-        <SessionWrapper>{children}</SessionWrapper>
-        {/* <Footer/> */}
+        <SessionWrapper>
+          {/* <Navbar /> */}
+          {children}
+          {/* <Footer /> */}
+        </SessionWrapper>
       </body>
     </html>
   );

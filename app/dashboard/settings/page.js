@@ -10,8 +10,8 @@ export default async function SettingsPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-1">সেটিংস ⚙️</h1>
-      <p className="text-gray-500 text-sm mb-8">আপনার প্রোফাইল আপডেট করুন</p>
+      <h1 className="text-2xl font-bold mb-1 text-emerald-500">সেটিংস ⚙️</h1>
+      <p className="text-gray-300 text-sm mb-8">আপনার প্রোফাইল আপডেট করুন</p>
       <SettingsClient user={JSON.parse(JSON.stringify(user))} />
     </div>
   );

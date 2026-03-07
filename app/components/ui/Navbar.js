@@ -9,14 +9,14 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="bg-gray-900 border-b border-gray-800 sticky top-0 z-50">
+    <nav className="bg-gray-900 border-b border-gray-200 sticky top-0 z-50">
       <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link
           href="/"
           className="flex items-center gap-2 text-amber-400 font-bold text-xl"
         >
-          <span className="bg-amber-400 text-gray-900 rounded-lg w-8 h-8 flex items-center justify-center text-lg">
+          <span className="bg-amber-400 text-gray-300 rounded-lg w-8 h-8 flex items-center justify-center text-lg">
             ☕
           </span>
           Get Me a Chai
@@ -74,7 +74,7 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {menuOpen && (
-        <div className="md:hidden bg-gray-900 border-t border-gray-800 px-4 py-4 flex flex-col gap-3">
+        <div className="md:hidden bg-gray-900 border-t border-gray-200 px-4 py-4 flex flex-col gap-3">
           {session?.user?.username ? (
             <div className="flex flex-col gap-3">
               <Link

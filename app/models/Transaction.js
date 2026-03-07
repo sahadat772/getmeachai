@@ -1,17 +1,46 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
+
+if (mongoose.models.Transaction) {
+    delete mongoose.models.Transaction;
+}
 
 const TransactionSchema = new mongoose.Schema(
     {
-        toUser: {type: mongoose.Schema.Types.ObjectId, ref:'User', require:true},
-        fromName: {type: String,require:true},
-        fromEmail: {type: String},
-        amount: {type: Number, require: true},
-        message: {type: String, default:''},
-        method: {type: String, enum: ["bkash", "Nagad"], require: true},
-        transactionId: {type: String},
-        status: {type: String, enum: ["pending","complete", "Failed"], default: "pending"},
+        toUser: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            required: true,
+        },
+        fromName: {
+            type: String,
+            required: true,
+        },
+        fromEmail: {
+            type: String,
+        },
+        amount: {
+            type: Number,
+            required: true,
+        },
+        message: {
+            type: String,
+            default: '',
+        },
+        method: {
+            type: String,
+            enum: ['bKash', 'Nagad'],
+            required: true,
+        },
+        transactionId: {
+            type: String,
+        },
+        status: {
+            type: String,
+            enum: ['pending', 'completed', 'failed'],
+            default: 'completed',
+        },
     },
-    {timestamps:true}
+    { timestamps: true }
 );
 
-export default  mongoose.models.Transaction || mongoose.model("Transaction", TransactionSchema);
+export default mongoose.model('Transaction', TransactionSchema);

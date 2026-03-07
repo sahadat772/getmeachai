@@ -33,8 +33,8 @@ export default function LoginPage() {
     <div className="min-h-[calc(100vh-64px)] flex items-center justify-center px-4 bg-gray-950">
       <Toaster />
       <div className="bg-gray-900 border border-gray-800 rounded-2xl p-10 w-full max-w-md">
-        <h1 className="text-2xl font-bold mb-2">স্বাগতম ☕</h1>
-        <p className="text-gray-400 text-sm mb-8">
+        <h1 className="text-2xl font-bold mb-2 text-amber-500">স্বাগতম ☕</h1>
+        <p className="text-gray-300 text-sm mb-8">
           আপনার অ্যাকাউন্টে লগ ইন করুন
         </p>
 
@@ -48,13 +48,13 @@ export default function LoginPage() {
 
         <div className="flex items-center gap-3 mb-6">
           <div className="flex-1 h-px bg-gray-800" />
-          <span className="text-gray-600 text-xs">অথবা</span>
+          <span className="text-gray-400 text-xs">অথবা</span>
           <div className="flex-1 h-px bg-gray-800" />
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div>
-            <label className="text-sm text-gray-400 mb-2 block">ইমেইল</label>
+            <label className="text-sm text-gray-300 mb-2 block">ইমেইল</label>
             <input
               type="email"
               value={email}
@@ -65,7 +65,7 @@ export default function LoginPage() {
             />
           </div>
           <div>
-            <label className="text-sm text-gray-400 mb-2 block">
+            <label className="text-sm text-gray-300 mb-2 block">
               পাসওয়ার্ড
             </label>
             <input

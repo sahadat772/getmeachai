@@ -2,12 +2,12 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 border-t border-gray-800 mt-auto">
+    <footer className="bg-gray-900 border-t border-b-gray-400 mt-auto">
       <div className="max-w-6xl mx-auto px-4 py-10">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
             <div className="flex items-center gap-2 text-amber-400 font-bold text-lg mb-3">
-              <span className="bg-amber-400 text-gray-900 rounded-lg w-7 h-7 flex items-center justify-center">
+              <span className="bg-amber-400 text-lime-400 rounded-lg w-7 h-7 flex items-center justify-center">
                 ☕
               </span>
               Get Me a Chai
@@ -60,7 +60,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-8 pt-6 text-center text-gray-500 text-sm">
+        <div className="border-t border-l-cyan-400-800 mt-8 pt-6 text-center text-gray-300 text-sm">
           © ২০২৬ Get Me a Chai। সর্বস্বত্ব সংরক্ষিত।
         </div>
       </div>

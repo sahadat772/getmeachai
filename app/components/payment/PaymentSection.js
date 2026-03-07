@@ -66,7 +66,7 @@ export default function PaymentSection({ user }) {
       </div>
 
       {/* Amount Presets */}
-      <div className="mb-1 text-xs text-gray-500">পরিমাণ (টাকা)</div>
+      <div className="mb-1 text-xs text-gray-400">পরিমাণ (টাকা)</div>
       <div className="flex gap-2 mb-3 flex-wrap">
         {presets.map((p) => (
           <button
@@ -91,7 +91,7 @@ export default function PaymentSection({ user }) {
       />
 
       {/* Name */}
-      <div className="mb-1 text-xs text-gray-500">আপনার নাম</div>
+      <div className="mb-1 text-xs text-gray-300">আপনার নাম</div>
       <input
         placeholder="আপনার নাম"
         value={name}
@@ -100,7 +100,7 @@ export default function PaymentSection({ user }) {
       />
 
       {/* Message */}
-      <div className="mb-1 text-xs text-gray-500">বার্তা (ঐচ্ছিক)</div>
+      <div className="mb-1 text-xs text-gray-300">বার্তা (ঐচ্ছিক)</div>
       <input
         placeholder="কিছু বলতে চান?"
         value={message}

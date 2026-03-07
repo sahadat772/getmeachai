@@ -25,11 +25,11 @@ export default async function SupportersPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-1">সাপোর্টারস 👥</h1>
-      <p className="text-gray-500 text-sm mb-8">যারা আপনাকে সাপোর্ট করেছেন</p>
+      <h1 className="text-2xl font-bold mb-1 text-cyan-500">সাপোর্টারস 👥</h1>
+      <p className="text-gray-300 text-sm mb-8">যারা আপনাকে সাপোর্ট করেছেন</p>
 
       {supporters.length === 0 ? (
-        <div className="bg-gray-900 border border-gray-800 rounded-2xl p-12 text-center text-gray-500">
+        <div className="bg-gray-900 border border-gray-800 rounded-2xl p-12 text-center text-gray-300">
           এখনো কোনো সাপোর্টার নেই।
         </div>
       ) : (
@@ -37,21 +37,21 @@ export default async function SupportersPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-gray-800">
-                <th className="text-left px-6 py-4 text-gray-500 font-medium">#</th>
-                <th className="text-left px-6 py-4 text-gray-500 font-medium">নাম</th>
-                <th className="text-left px-6 py-4 text-gray-500 font-medium">মোট দান</th>
-                <th className="text-left px-6 py-4 text-gray-500 font-medium">বার</th>
-                <th className="text-left px-6 py-4 text-gray-500 font-medium">শেষ তারিখ</th>
+                <th className="text-left px-6 py-4 text-gray-300 font-medium">#</th>
+                <th className="text-left px-6 py-4 text-gray-300 font-medium">নাম</th>
+                <th className="text-left px-6 py-4 text-gray-300 font-medium">মোট দান</th>
+                <th className="text-left px-6 py-4 text-gray-300 font-medium">বার</th>
+                <th className="text-left px-6 py-4 text-gray-300 font-medium">শেষ তারিখ</th>
               </tr>
             </thead>
             <tbody>
               {supporters.map((s, i) => (
                 <tr key={s.name} className="border-b border-gray-800/50 hover:bg-gray-800/30 transition">
-                  <td className="px-6 py-4 text-gray-500">{i + 1}</td>
-                  <td className="px-6 py-4 font-medium">{s.name}</td>
+                  <td className="px-6 py-4 text-gray-300">{i + 1}</td>
+                  <td className="px-6 py-4 font-medium text-cyan-200">{s.name}</td>
                   <td className="px-6 py-4 font-mono text-amber-400 font-bold">৳{s.total.toLocaleString()}</td>
-                  <td className="px-6 py-4 text-gray-400">{s.count} বার</td>
-                  <td className="px-6 py-4 text-gray-500 text-xs">
+                  <td className="px-6 py-4 text-gray-300">{s.count} বার</td>
+                  <td className="px-6 py-4 text-gray-300 text-xs">
                     {new Date(s.last).toLocaleDateString('bn-BD')}
                   </td>
                 </tr>
