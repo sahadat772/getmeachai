@@ -1,6 +1,9 @@
 import { DM_Sans, Syne } from 'next/font/google';
 import './globals.css';
 import ThemeProvider from './components/ui/ThemeProvider';
+import SessionWrapper from './components/ui/SessionWrapper';
+import Navbar from './components/ui/Navbar';
+import Footer from './components/ui/Footer';
 
 const dmSans = DM_Sans({
   subsets: ['latin'],
@@ -32,7 +35,12 @@ export default function RootLayout({ children }) {
           <div className="orb orb-1" />
           <div className="orb orb-2" />
           <div className="orb orb-3" />
-          {children}
+          <SessionWrapper>
+            <Navbar />
+
+            {children}
+            <Footer />
+          </SessionWrapper>
         </ThemeProvider>
       </body>
     </html>
