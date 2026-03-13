@@ -1,32 +1,39 @@
-import { Hind_Siliguri } from "next/font/google";
-import "./globals.css";
-import SessionWrapper from "./components/ui/SessionWrapper";
-// import Navbar from "./components/ui/Navbar";
-// import Footer from "./components/ui/Footer";
+import { DM_Sans, Syne } from 'next/font/google';
+import './globals.css';
+import ThemeProvider from './components/ui/ThemeProvider';
 
-const hind = Hind_Siliguri({
-  subsets: ["bengali"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-  preload: true,
+const dmSans = DM_Sans({
+  subsets: ['latin'],
+  variable: '--font-dm-sans',
+  display: 'swap',
+});
+
+const syne = Syne({
+  subsets: ['latin'],
+  variable: '--font-syne',
+  display: 'swap',
 });
 
 export const metadata = {
-  title: "Get Me a Chai",
-  description: "বাংলাদেশের ক্রিয়েটরদের সাপোর্ট প্ল্যাটফর্ম",
+  title: 'Get Me a Chai ☕ — Support Creators You Love',
+  description: 'Support your favorite creators with a chai. Simple, fast, and free to start.',
+  openGraph: {
+    title: 'Get Me a Chai ☕',
+    description: 'Support your favorite creators with a chai.',
+    type: 'website',
+  },
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="bn" suppressHydrationWarning>
-      <body
-        className={`${hind.className} bg-gray-950 text-gray-100 min-h-screen flex flex-col`}
-      >
-        <SessionWrapper>
-          {/* <Navbar /> */}
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${dmSans.variable} ${syne.variable}`} suppressHydrationWarning>
+        <ThemeProvider>
+          <div className="orb orb-1" />
+          <div className="orb orb-2" />
+          <div className="orb orb-3" />
           {children}
-          {/* <Footer /> */}
-        </SessionWrapper>
+        </ThemeProvider>
       </body>
     </html>
   );

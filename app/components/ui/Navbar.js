@@ -1,120 +1,155 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { useSession, signOut } from "next-auth/react";
-import { useState } from "react";
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { useSession, signOut } from 'next-auth/react';
+import { useTheme } from './ThemeProvider';
 
 export default function Navbar() {
   const { data: session } = useSession();
+  const { theme, toggleTheme } = useTheme();
+  const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
+  useEffect(function () {
+    function onScroll() {
+      setScrolled(window.scrollY > 20);
+    }
+    window.addEventListener('scroll', onScroll);
+    return function () { window.removeEventListener('scroll', onScroll); };
+  }, []);
+
   return (
-    <nav className="bg-gray-900 border-b border-gray-200 sticky top-0 z-50">
-      <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+    <nav style={{
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      zIndex: 1000,
+      padding: scrolled ? '0.75rem 1.5rem' : '1rem 1.5rem',
+      background: scrolled ? 'var(--surface)' : 'transparent',
+      backdropFilter: scrolled ? 'blur(20px)' : 'none',
+      WebkitBackdropFilter: scrolled ? 'blur(20px)' : 'none',
+      borderBottom: scrolled ? '1px solid var(--border)' : '1px solid transparent',
+      transition: 'all 0.3s ease',
+    }}>
+      <div style={{ maxWidth: '72rem', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem' }}>
+
         {/* Logo */}
-        <Link
-          href="/"
-          className="flex items-center gap-2 text-amber-400 font-bold text-xl"
-        >
-          <span className="bg-amber-400 text-gray-300 rounded-lg w-8 h-8 flex items-center justify-center text-lg">
-            ☕
+        <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
+          <div style={{
+            width: '36px', height: '36px', borderRadius: '10px',
+            background: 'var(--gradient)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: '1.1rem', boxShadow: 'var(--shadow)',
+          }}>☕</div>
+          <span style={{
+            fontFamily: 'var(--font-heading)',
+            fontWeight: 800,
+            fontSize: '1.1rem',
+            color: 'var(--text)',
+          }}>
+            Get Me a <span style={{ background: 'var(--gradient)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Chai</span>
           </span>
-          Get Me a Chai
         </Link>
 
         {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-3">
-          {session?.user?.username ? (
-            <div className="flex items-center gap-3">
-              <Link
-                href="/dashboard"
-                className="text-gray-300 hover:text-amber-400 text-sm font-medium px-3 py-2 rounded-lg hover:bg-gray-800 transition"
-              >
-                ড্যাশবোর্ড
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }} className="hidden md:flex">
+          <Link href="/about" style={{ padding: '8px 16px', borderRadius: '10px', fontSize: '14px', fontWeight: 500, color: 'var(--text-muted)', transition: 'color 0.2s' }}
+            onMouseEnter={function (e) { e.currentTarget.style.color = 'var(--text)'; }}
+            onMouseLeave={function (e) { e.currentTarget.style.color = 'var(--text-muted)'; }}>
+            Explore
+          </Link>
+
+          {session ? (
+            <>
+              <Link href="/dashboard" style={{ padding: '8px 16px', borderRadius: '10px', fontSize: '14px', fontWeight: 500, color: 'var(--text-muted)', transition: 'color 0.2s' }}
+                onMouseEnter={function (e) { e.currentTarget.style.color = 'var(--text)'; }}
+                onMouseLeave={function (e) { e.currentTarget.style.color = 'var(--text-muted)'; }}>
+                Dashboard
               </Link>
-              <Link
-                href={`/profile/${session.user.username}`}
-                className="text-gray-300 hover:text-amber-400 text-sm font-medium px-3 py-2 rounded-lg hover:bg-gray-800 transition"
-              >
-                প্রোফাইল
+              <Link href={'/profile/' + session.user.username} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '6px 14px', borderRadius: '10px', fontSize: '14px', fontWeight: 600, background: 'var(--accent-light)', color: 'var(--accent)', border: '1px solid var(--accent-border)' }}>
+                {session.user.image ? (
+                  <img src={session.user.image} alt="avatar" style={{ width: '20px', height: '20px', borderRadius: '50%', objectFit: 'cover' }} />
+                ) : (
+                  <div style={{ width: '20px', height: '20px', borderRadius: '50%', background: 'var(--gradient)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', color: 'white' }}>
+                    {session.user.name?.charAt(0)}
+                  </div>
+                )}
+                {session.user.name?.split(' ')[0]}
               </Link>
-              <button
-                onClick={() => signOut({ callbackUrl: "/" })}
-                className="bg-gray-800 text-gray-300 hover:text-white text-sm font-medium px-4 py-2 rounded-lg transition"
-              >
-                লগ আউট
-              </button>
-            </div>
+            </>
           ) : (
-            <div className="flex items-center gap-3">
-              <Link
-                href="/login"
-                className="text-gray-300 hover:text-amber-400 text-sm font-medium px-3 py-2 rounded-lg hover:bg-gray-800 transition"
-              >
-                লগ ইন
+            <>
+              <Link href="/login" style={{ padding: '8px 16px', borderRadius: '10px', fontSize: '14px', fontWeight: 600, color: 'var(--text-muted)' }}>
+                Login
               </Link>
-              <Link
-                href="/signup"
-                className="bg-amber-400 hover:bg-amber-500 text-gray-900 text-sm font-bold px-4 py-2 rounded-lg transition"
-              >
-                সাইন আপ
+              <Link href="/signup" style={{ padding: '10px 20px', borderRadius: '10px', fontSize: '14px', fontWeight: 700, background: 'var(--gradient)', color: 'white' }}>
+                Start my page →
               </Link>
-            </div>
+            </>
           )}
+
+          {/* Theme Toggle */}
+          <button
+            onClick={toggleTheme}
+            aria-label="Toggle theme"
+            style={{
+              width: '40px', height: '40px', borderRadius: '10px',
+              background: 'var(--surface-2)',
+              border: '1px solid var(--border)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: '1rem', cursor: 'pointer',
+              transition: 'all 0.2s ease',
+              color: 'var(--text-muted)',
+            }}
+            onMouseEnter={function (e) { e.currentTarget.style.borderColor = 'var(--accent)'; e.currentTarget.style.color = 'var(--accent)'; }}
+            onMouseLeave={function (e) { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-muted)'; }}
+          >
+            {theme === 'dark' ? '☀️' : '🌙'}
+          </button>
         </div>
 
-        {/* Mobile Menu Button */}
-        <button
-          className="md:hidden text-gray-300 hover:text-white"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          {menuOpen ? "✕" : "☰"}
-        </button>
+        {/* Mobile right */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }} className="md:hidden">
+          <button onClick={toggleTheme}
+            style={{ width: '36px', height: '36px', borderRadius: '8px', background: 'var(--surface-2)', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.9rem', cursor: 'pointer' }}>
+            {theme === 'dark' ? '☀️' : '🌙'}
+          </button>
+          <button onClick={function () { setMenuOpen(function (o) { return !o; }); }}
+            style={{ width: '36px', height: '36px', borderRadius: '8px', background: 'var(--surface-2)', border: '1px solid var(--border)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '4px', cursor: 'pointer' }}>
+            <span style={{ width: '16px', height: '2px', background: 'var(--text-muted)', borderRadius: '2px', transition: 'all 0.2s' }} />
+            <span style={{ width: '16px', height: '2px', background: 'var(--text-muted)', borderRadius: '2px', transition: 'all 0.2s' }} />
+            <span style={{ width: '16px', height: '2px', background: 'var(--text-muted)', borderRadius: '2px', transition: 'all 0.2s' }} />
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
       {menuOpen && (
-        <div className="md:hidden bg-gray-900 border-t border-gray-200 px-4 py-4 flex flex-col gap-3">
-          {session?.user?.username ? (
-            <div className="flex flex-col gap-3">
-              <Link
-                href="/dashboard"
-                className="text-gray-300 text-sm py-2"
-                onClick={() => setMenuOpen(false)}
-              >
-                ড্যাশবোর্ড
-              </Link>
-              <Link
-                href={`/profile/${session.user.username}`}
-                className="text-gray-300 text-sm py-2"
-                onClick={() => setMenuOpen(false)}
-              >
-                প্রোফাইল
-              </Link>
-              <button
-                onClick={() => signOut({ callbackUrl: "/" })}
-                className="text-gray-300 text-sm py-2 text-left"
-              >
-                লগ আউট
-              </button>
-            </div>
+        <div style={{
+          marginTop: '0.5rem',
+          padding: '1rem',
+          background: 'var(--surface)',
+          borderRadius: '16px',
+          border: '1px solid var(--border)',
+          display: 'flex', flexDirection: 'column', gap: '8px',
+          animation: 'fadeInDown 0.2s ease',
+          maxWidth: '72rem',
+          margin: '0.5rem auto 0',
+        }}>
+          <Link href="/about" onClick={function () { setMenuOpen(false); }} style={{ padding: '10px 14px', borderRadius: '10px', fontSize: '14px', fontWeight: 600, color: 'var(--text-muted)' }}>Explore</Link>
+          {session ? (
+            <>
+              <Link href="/dashboard" onClick={function () { setMenuOpen(false); }} style={{ padding: '10px 14px', borderRadius: '10px', fontSize: '14px', fontWeight: 600, color: 'var(--text-muted)' }}>Dashboard</Link>
+              <Link href={'/profile/' + session.user.username} onClick={function () { setMenuOpen(false); }} style={{ padding: '10px 14px', borderRadius: '10px', fontSize: '14px', fontWeight: 600, color: 'var(--accent)', background: 'var(--accent-light)', border: '1px solid var(--accent-border)' }}>My Page</Link>
+              <button onClick={function () { signOut(); setMenuOpen(false); }} style={{ padding: '10px 14px', borderRadius: '10px', fontSize: '14px', fontWeight: 600, color: 'var(--red)', background: 'var(--red-light)', border: '1px solid var(--red-border)', textAlign: 'left' }}>Sign Out</button>
+            </>
           ) : (
-            <div className="flex flex-col gap-3">
-              <Link
-                href="/login"
-                className="text-gray-300 text-sm py-2"
-                onClick={() => setMenuOpen(false)}
-              >
-                লগ ইন
-              </Link>
-              <Link
-                href="/signup"
-                className="text-amber-400 text-sm py-2 font-bold"
-                onClick={() => setMenuOpen(false)}
-              >
-                সাইন আপ
-              </Link>
-            </div>
+            <>
+              <Link href="/login" onClick={function () { setMenuOpen(false); }} style={{ padding: '10px 14px', borderRadius: '10px', fontSize: '14px', fontWeight: 600, color: 'var(--text-muted)' }}>Login</Link>
+              <Link href="/signup" onClick={function () { setMenuOpen(false); }} style={{ padding: '10px 14px', borderRadius: '10px', fontSize: '14px', fontWeight: 700, background: 'var(--gradient)', color: 'white', textAlign: 'center' }}>Start my page →</Link>
+            </>
           )}
         </div>
       )}

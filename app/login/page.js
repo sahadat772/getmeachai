@@ -1,100 +1,121 @@
-"use client";
+'use client';
 
-import { signIn } from "next-auth/react";
-import { useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import toast, { Toaster } from "react-hot-toast";
+import { signIn } from 'next-auth/react';
+import { useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function LoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
-    const res = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
-    });
+    const res = await signIn('credentials', { email, password, redirect: false });
     setLoading(false);
     if (res?.error) {
-      toast.error("ইমেইল বা পাসওয়ার্ড ভুল!");
+      toast.error('ইমেইল বা পাসওয়ার্ড ভুল! ❌');
     } else {
-      toast.success("লগইন সফল!");
-      router.push("/dashboard");
+      toast.success('লগইন সফল! 🎉');
+      router.push('/dashboard');
     }
+  }
+
+  const inputStyle = {
+    width: '100%', padding: '13px 16px', borderRadius: '12px',
+    background: 'var(--surface-2)', border: '1px solid var(--border)',
+    color: 'var(--text)', fontSize: '14px', fontFamily: 'var(--font-body)',
+    outline: 'none', transition: 'all 0.2s', boxSizing: 'border-box',
+  };
+
+  const labelStyle = {
+    display: 'block', fontSize: '12px', fontWeight: 700,
+    color: 'var(--text-muted)', textTransform: 'uppercase',
+    letterSpacing: '0.06em', marginBottom: '8px',
   };
 
   return (
-    <div className="min-h-[calc(100vh-64px)] flex items-center justify-center px-4 bg-gray-950">
-      <Toaster />
-      <div className="bg-gray-900 border border-gray-800 rounded-2xl p-10 w-full max-w-md">
-        <h1 className="text-2xl font-bold mb-2 text-amber-500">স্বাগতম ☕</h1>
-        <p className="text-gray-300 text-sm mb-8">
-          আপনার অ্যাকাউন্টে লগ ইন করুন
-        </p>
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem 1.5rem', paddingTop: '6rem' }}>
+      <Toaster position="bottom-right" toastOptions={{ style: { background: 'var(--surface)', color: 'var(--text)', border: '1px solid var(--border)', fontFamily: 'var(--font-body)', fontSize: '14px' } }} />
 
-        {/* Google */}
-        <button
-          onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
-          className="w-full flex items-center justify-center gap-3 bg-gray-800 hover:bg-gray-700 border border-gray-700 text-gray-200 font-semibold py-3 rounded-xl transition mb-6"
-        >
-          <span>🔵</span> Google দিয়ে লগ ইন
-        </button>
+      <div style={{ width: '100%', maxWidth: '420px', animation: 'scaleIn 0.4s ease' }}>
 
-        <div className="flex items-center gap-3 mb-6">
-          <div className="flex-1 h-px bg-gray-800" />
-          <span className="text-gray-400 text-xs">অথবা</span>
-          <div className="flex-1 h-px bg-gray-800" />
+        {/* Logo */}
+        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+          <div style={{ width: '56px', height: '56px', borderRadius: '16px', background: 'var(--gradient)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.75rem', margin: '0 auto 1rem', boxShadow: 'var(--shadow-lg)' }}>☕</div>
+          <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.75rem', fontWeight: 900, color: 'var(--text)', marginBottom: '6px' }}>
+            স্বাগতম{' '}
+            <span style={{ background: 'var(--gradient)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>ফিরে!</span>
+          </h1>
+          <p style={{ color: 'var(--text-muted)', fontSize: '14px' }}>আপনার অ্যাকাউন্টে লগ ইন করুন</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <div>
-            <label className="text-sm text-gray-300 mb-2 block">ইমেইল</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@example.com"
-              required
-              className="w-full bg-gray-800 border border-gray-700 focus:border-amber-400 outline-none text-gray-100 px-4 py-3 rounded-xl text-sm transition"
-            />
-          </div>
-          <div>
-            <label className="text-sm text-gray-300 mb-2 block">
-              পাসওয়ার্ড
-            </label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
-              required
-              className="w-full bg-gray-800 border border-gray-700 focus:border-amber-400 outline-none text-gray-100 px-4 py-3 rounded-xl text-sm transition"
-            />
-          </div>
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-amber-400 hover:bg-amber-500 disabled:opacity-60 text-gray-900 font-bold py-3 rounded-xl transition mt-2"
-          >
-            {loading ? "লোড হচ্ছে..." : "লগ ইন করুন"}
-          </button>
-        </form>
+        {/* Card */}
+        <div style={{ padding: '2rem', borderRadius: '24px', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--shadow)' }}>
 
-        <p className="text-center text-gray-300 text-sm mt-6">
-          অ্যাকাউন্ট নেই?{" "}
-          <Link
-            href="/signup"
-            className="text-amber-400 hover:underline font-medium"
-          >
-            সাইন আপ করুন
-          </Link>
-        </p>
+          {/* Google */}
+          <button onClick={function () { signIn('google', { callbackUrl: '/dashboard' }); }}
+            style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', padding: '13px', borderRadius: '12px', background: 'var(--surface-2)', border: '1px solid var(--border)', color: 'var(--text)', fontWeight: 700, fontSize: '14px', cursor: 'pointer', transition: 'all 0.2s', marginBottom: '1.5rem', fontFamily: 'var(--font-body)' }}
+            onMouseEnter={function (e) { e.currentTarget.style.borderColor = 'var(--accent)'; e.currentTarget.style.background = 'var(--accent-light)'; }}
+            onMouseLeave={function (e) { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.background = 'var(--surface-2)'; }}>
+            <span style={{ fontSize: '1.1rem' }}>🔵</span> Google দিয়ে লগ ইন
+          </button>
+
+          {/* Divider */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1.5rem' }}>
+            <div style={{ flex: 1, height: '1px', background: 'var(--border)' }} />
+            <span style={{ fontSize: '12px', color: 'var(--text-faint)', fontWeight: 600 }}>অথবা</span>
+            <div style={{ flex: 1, height: '1px', background: 'var(--border)' }} />
+          </div>
+
+          {/* Form */}
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <div>
+              <label style={labelStyle}>ইমেইল</label>
+              <input type="email" value={email} onChange={function (e) { setEmail(e.target.value); }} placeholder="you@example.com" required style={inputStyle}
+                onFocus={function (e) { e.target.style.borderColor = 'var(--accent)'; e.target.style.boxShadow = '0 0 0 3px var(--accent-light)'; }}
+                onBlur={function (e) { e.target.style.borderColor = 'var(--border)'; e.target.style.boxShadow = 'none'; }} />
+            </div>
+            <div>
+              <label style={labelStyle}>পাসওয়ার্ড</label>
+              <div style={{ position: 'relative' }}>
+                <input type={showPass ? 'text' : 'password'} value={password} onChange={function (e) { setPassword(e.target.value); }} placeholder="••••••••" required style={{ ...inputStyle, paddingRight: '48px' }}
+                  onFocus={function (e) { e.target.style.borderColor = 'var(--accent)'; e.target.style.boxShadow = '0 0 0 3px var(--accent-light)'; }}
+                  onBlur={function (e) { e.target.style.borderColor = 'var(--border)'; e.target.style.boxShadow = 'none'; }} />
+                <button type="button" onClick={function () { setShowPass(function (s) { return !s; }); }}
+                  style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', fontSize: '1rem', color: 'var(--text-faint)' }}>
+                  {showPass ? '🙈' : '👁️'}
+                </button>
+              </div>
+            </div>
+
+            <button type="submit" disabled={loading}
+              style={{ width: '100%', padding: '14px', borderRadius: '12px', background: loading ? 'var(--border)' : 'var(--gradient)', color: 'white', fontWeight: 800, fontSize: '15px', border: 'none', cursor: loading ? 'not-allowed' : 'pointer', transition: 'all 0.2s', opacity: loading ? 0.7 : 1, fontFamily: 'var(--font-body)', marginTop: '4px' }}
+              onMouseEnter={function (e) { if (!loading) { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = 'var(--shadow-lg)'; } }}
+              onMouseLeave={function (e) { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}>
+              {loading ? (
+                <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+                  <span style={{ width: '16px', height: '16px', border: '2px solid white', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 0.8s linear infinite', display: 'inline-block' }} />
+                  লোড হচ্ছে...
+                </span>
+              ) : 'লগ ইন করুন →'}
+            </button>
+          </form>
+
+          <p style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: '14px', marginTop: '1.5rem' }}>
+            অ্যাকাউন্ট নেই?{' '}
+            <Link href="/signup" style={{ color: 'var(--accent)', fontWeight: 700, textDecoration: 'none' }}
+              onMouseEnter={function (e) { e.currentTarget.style.textDecoration = 'underline'; }}
+              onMouseLeave={function (e) { e.currentTarget.style.textDecoration = 'none'; }}>
+              সাইন আপ করুন →
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

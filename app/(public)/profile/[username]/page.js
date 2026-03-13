@@ -12,6 +12,10 @@ export async function generateMetadata({ params }) {
   return {
     title: `${user.name} | Get Me a Chai`,
     description: user.bio || `${user.name}-কে সাপোর্ট করুন`,
+    openGraph: {
+      title: `${user.name} | Get Me a Chai`,
+      description: user.bio || `${user.name}-কে সাপোর্ট করুন`,
+    },
   };
 }
 
@@ -32,121 +36,202 @@ export default async function ProfilePage({ params }) {
 
   const totalEarned = transactions.reduce((sum, t) => sum + t.amount, 0);
   const supporterCount = new Set(transactions.map((t) => t.fromName)).size;
+  const totalChai = Math.floor(totalEarned / 30);
+
+  const initials = user.name?.charAt(0).toUpperCase();
 
   return (
-    <div className="bg-gray-950 min-h-screen">
-      {/* Cover + Avatar */}
-      <div className="h-32 bg-linear-to-r from-amber-600/30 via-amber-400/20 to-amber-600/30" />
-      <div className="max-w-4xl mx-auto px-4">
-        <div className="relative -mt-12 mb-4">
-          <div className="w-24 h-24 rounded-2xl bg-linear-to-br from-amber-400 to-amber-600 flex items-center justify-center text-gray-300 font-bold text-3xl font-mono border-4 border-gray-950">
-            {user.name?.charAt(0).toUpperCase()}
+    <div style={{ minHeight: '100vh', paddingTop: '5rem', position: 'relative', zIndex: 1 }}>
+
+      {/* Cover */}
+      <div style={{
+        height: '200px',
+        background: 'linear-gradient(135deg, var(--accent)30, var(--cyan)20, var(--amber)15)',
+        borderBottom: '1px solid var(--border)',
+        position: 'relative',
+        overflow: 'hidden',
+      }}>
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, #8b5cf640, #22d3ee30, #fbbf2420)' }} />
+        <div style={{ position: 'absolute', top: '-50px', right: '-50px', width: '200px', height: '200px', borderRadius: '50%', background: 'var(--accent-light)', filter: 'blur(60px)' }} />
+        <div style={{ position: 'absolute', bottom: '-30px', left: '20%', width: '150px', height: '150px', borderRadius: '50%', background: 'var(--cyan-light)', filter: 'blur(50px)' }} />
+      </div>
+
+      <div style={{ maxWidth: '72rem', margin: '0 auto', padding: '0 1.5rem' }}>
+
+        {/* Avatar */}
+        <div style={{ position: 'relative', marginTop: '-48px', marginBottom: '1.5rem' }}>
+          <div style={{
+            width: '96px', height: '96px',
+            borderRadius: '20px',
+            background: user.image ? 'transparent' : 'var(--gradient)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: '2.5rem', fontWeight: 900,
+            fontFamily: 'var(--font-heading)',
+            color: 'white',
+            border: '4px solid var(--bg)',
+            overflow: 'hidden',
+            boxShadow: 'var(--shadow-lg)',
+          }}>
+            {user.image ? (
+              <img src={user.image} alt={user.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            ) : initials}
           </div>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8 pb-16">
-          {/* Left — Profile Info */}
-          <div className="md:col-span-1">
-            <h1 className="text-2xl font-bold mb-1 text-amber-50">{user.name}</h1>
-            <p className="text-amber-400 text-sm mb-3">@{user.username}</p>
-            {user.bio && (
-              <p className="text-gray-400 text-sm leading-relaxed mb-5">
-                {user.bio}
-              </p>
-            )}
+        <div style={{ display: 'grid', gap: '2rem', paddingBottom: '4rem' }} className="md:grid-cols-[300px_1fr]">
 
-            {/* Stats */}
-            <div className="grid grid-cols-2 gap-3 mb-5">
-              <div className="bg-gray-900 border border-gray-800 rounded-xl p-4 text-center">
-                <div className="text-xl font-bold font-mono text-amber-400">
-                  {supporterCount}
-                </div>
-                <div className="text-xs text-gray-300 mt-1">সাপোর্টার</div>
-              </div>
-              <div className="bg-gray-900 border border-gray-800 rounded-xl p-4 text-center">
-                <div className="text-xl font-bold font-mono text-amber-400">
-                  ৳{totalEarned.toLocaleString()}
-                </div>
-                <div className="text-xs text-gray-400 mt-1">মোট আয়</div>
-              </div>
+          {/* ===== LEFT COLUMN ===== */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+
+            {/* Name & Bio */}
+            <div style={{ padding: '1.5rem', borderRadius: '20px', background: 'var(--surface)', border: '1px solid var(--border)' }}>
+              <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.5rem', fontWeight: 900, color: 'var(--text)', marginBottom: '4px' }}>{user.name}</h1>
+              <p style={{ fontSize: '13px', color: 'var(--accent)', fontWeight: 600, marginBottom: '1rem' }}>@{user.username}</p>
+              {user.bio && (
+                <p style={{ fontSize: '14px', color: 'var(--text-muted)', lineHeight: 1.75 }}>{user.bio}</p>
+              )}
             </div>
 
-            {/* Payment numbers */}
+            {/* Stats */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+              {[
+                { value: supporterCount, label: 'সাপোর্টার', icon: '❤️', color: 'var(--red)' },
+                { value: totalChai + '☕', label: 'মোট চা', icon: '☕', color: 'var(--amber)' },
+                { value: transactions.length, label: 'ট্রানজেকশন', icon: '📊', color: 'var(--cyan)' },
+                { value: '৳' + totalEarned.toLocaleString(), label: 'মোট আয়', icon: '💰', color: 'var(--green)' },
+              ].map(function (s) {
+                return (
+                  <div key={s.label} style={{ padding: '1rem', borderRadius: '14px', background: 'var(--surface)', border: '1px solid var(--border)', textAlign: 'center' }}>
+                    <div style={{ fontSize: '1.25rem', marginBottom: '4px' }}>{s.icon}</div>
+                    <div style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 900, color: s.color, marginBottom: '2px' }}>{s.value}</div>
+                    <div style={{ fontSize: '11px', color: 'var(--text-faint)' }}>{s.label}</div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Payment Numbers */}
             {(user.bkashNumber || user.nagadNumber) && (
-              <div className="bg-gray-900 border border-gray-800 rounded-xl p-4">
-                <div className="text-xs text-gray-400 mb-3 uppercase tracking-widest">
-                  পেমেন্ট নম্বর
-                </div>
+              <div style={{ padding: '1.25rem', borderRadius: '16px', background: 'var(--surface)', border: '1px solid var(--border)' }}>
+                <div style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-faint)', marginBottom: '1rem' }}>পেমেন্ট নম্বর</div>
                 {user.bkashNumber && (
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="text-pink-400 text-sm">📱 bKash:</span>
-                    <span className="text-gray-300 text-sm font-mono">
-                      {user.bkashNumber}
-                    </span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 12px', borderRadius: '10px', background: '#ec489920', border: '1px solid #ec489940', marginBottom: '8px' }}>
+                    <span style={{ fontSize: '1.1rem' }}>📱</span>
+                    <div>
+                      <div style={{ fontSize: '11px', color: '#ec4899', fontWeight: 700 }}>bKash</div>
+                      <div style={{ fontSize: '14px', color: 'var(--text)', fontFamily: 'monospace', fontWeight: 600 }}>{user.bkashNumber}</div>
+                    </div>
                   </div>
                 )}
                 {user.nagadNumber && (
-                  <div className="flex items-center gap-2">
-                    <span className="text-orange-400 text-sm">💳 Nagad:</span>
-                    <span className="text-gray-300 text-sm font-mono">
-                      {user.nagadNumber}
-                    </span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 12px', borderRadius: '10px', background: '#f9731620', border: '1px solid #f9731640' }}>
+                    <span style={{ fontSize: '1.1rem' }}>💳</span>
+                    <div>
+                      <div style={{ fontSize: '11px', color: '#f97316', fontWeight: 700 }}>Nagad</div>
+                      <div style={{ fontSize: '14px', color: 'var(--text)', fontFamily: 'monospace', fontWeight: 600 }}>{user.nagadNumber}</div>
+                    </div>
                   </div>
                 )}
               </div>
             )}
+
+            {/* Share */}
+            <div style={{ padding: '1.25rem', borderRadius: '16px', background: 'var(--surface)', border: '1px solid var(--border)' }}>
+              <div style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-faint)', marginBottom: '0.75rem' }}>প্রোফাইল শেয়ার করুন</div>
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                {['Facebook', 'Twitter', 'Copy Link'].map(function (s) {
+                  return (
+                    <button key={s} style={{ padding: '7px 14px', borderRadius: '8px', fontSize: '12px', fontWeight: 600, background: 'var(--surface-2)', border: '1px solid var(--border)', color: 'var(--text-muted)', cursor: 'pointer', transition: 'all 0.2s' }}
+                      onMouseEnter={function (e) { e.currentTarget.style.borderColor = 'var(--accent)'; e.currentTarget.style.color = 'var(--accent)'; }}
+                      onMouseLeave={function (e) { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-muted)'; }}>
+                      {s}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
           </div>
 
-          {/* Right — Payment + Transactions */}
-          <div className="md:col-span-2 flex flex-col gap-6">
-            <PaymentSection user={JSON.parse(JSON.stringify(user))} />
+          {/* ===== RIGHT COLUMN ===== */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+
+            {/* Payment Section */}
+            <div style={{ borderRadius: '20px', background: 'var(--surface)', border: '1px solid var(--border)', overflow: 'hidden' }}>
+              <div style={{ padding: '1.25rem 1.5rem', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <span style={{ fontSize: '1.25rem' }}>☕</span>
+                <h2 style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, color: 'var(--text)', fontSize: '1rem' }}>
+                  {user.name?.split(' ')[0]}-কে একটা চা কিনুন
+                </h2>
+              </div>
+              <div style={{ padding: '1.5rem' }}>
+                <PaymentSection user={JSON.parse(JSON.stringify(user))} />
+              </div>
+            </div>
 
             {/* Recent Supporters */}
-            <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6">
-              <h2 className="text-base font-semibold mb-4 text-green-400">
-                সাম্প্রতিক সাপোর্ট ☕
-              </h2>
+            <div style={{ padding: '1.5rem', borderRadius: '20px', background: 'var(--surface)', border: '1px solid var(--border)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '1.25rem' }}>
+                <span style={{ fontSize: '1.1rem' }}>❤️</span>
+                <h2 style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, color: 'var(--text)', fontSize: '1rem' }}>সাম্প্রতিক সাপোর্ট</h2>
+                {transactions.length > 0 && (
+                  <span style={{ marginLeft: 'auto', padding: '3px 10px', borderRadius: '8px', fontSize: '12px', fontWeight: 700, background: 'var(--green-light)', color: 'var(--green)', border: '1px solid var(--green-border)' }}>
+                    {transactions.length} টি
+                  </span>
+                )}
+              </div>
+
               {transactions.length === 0 ? (
-                <div className="text-center py-8 text-gray-300 text-sm">
-                  এখনো কোনো সাপোর্ট আসেনি।
-                  <br />
-                  <span className="text-gray-300">প্রথম সাপোর্টার হন!</span>
+                <div style={{ textAlign: 'center', padding: '3rem 1rem' }}>
+                  <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>☕</div>
+                  <p style={{ color: 'var(--text-muted)', fontSize: '14px', marginBottom: '4px' }}>এখনো কোনো সাপোর্ট আসেনি।</p>
+                  <p style={{ color: 'var(--accent)', fontSize: '13px', fontWeight: 600 }}>প্রথম সাপোর্টার হন!</p>
                 </div>
               ) : (
-                <div className="flex flex-col gap-3">
-                  {transactions.map((t) => (
-                    <div
-                      key={t._id}
-                      className="flex items-start gap-3 p-3 rounded-xl bg-gray-800/40 border border-gray-700/50 text-yellow-400"
-                    >
-                      <div
-                        className={`w-9 h-9 rounded-lg flex items-center justify-center text-base shrink-0  ${t.method === "bKash" ? "bg-pink-500/60" : "bg-orange-500/60"}`}
-                      >
-                        {t.method === "bKash" ? "📱" : "💳"}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between gap-2">
-                          <span className="text-sm font-semibold truncate">
-                            {t.fromName}
-                          </span>
-                          <span className="text-sm font-bold font-mono text-green-400 shrink-0">
-                            +৳{t.amount}
-                          </span>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                  {transactions.map(function (t) {
+                    const isBkash = t.method === 'bKash';
+                    return (
+                      <div key={t._id.toString()} style={{
+                        display: 'flex', alignItems: 'flex-start', gap: '0.75rem',
+                        padding: '1rem 1.25rem',
+                        borderRadius: '14px',
+                        background: 'var(--surface-2)',
+                        border: '1px solid var(--border)',
+                        transition: 'border-color 0.2s',
+                        animation: 'fadeIn 0.4s ease',
+                      }}
+                        onMouseEnter={function (e) { e.currentTarget.style.borderColor = 'var(--border-hover)'; }}
+                        onMouseLeave={function (e) { e.currentTarget.style.borderColor = 'var(--border)'; }}>
+                        <div style={{
+                          width: '40px', height: '40px', borderRadius: '10px',
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          fontSize: '1.1rem', flexShrink: 0,
+                          background: isBkash ? '#ec489920' : '#f9731620',
+                          border: '1px solid ' + (isBkash ? '#ec489940' : '#f9731640'),
+                        }}>
+                          {isBkash ? '📱' : '💳'}
                         </div>
-                        {t.message && (
-                          <p className="text-xs text-lime-500 mt-1">
-                            {t.message}
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem', marginBottom: '4px', flexWrap: 'wrap' }}>
+                            <span style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, color: 'var(--text)', fontSize: '14px' }}>{t.fromName}</span>
+                            <span style={{ padding: '3px 10px', borderRadius: '8px', fontSize: '12px', fontWeight: 700, background: 'var(--amber-light)', color: 'var(--amber)', border: '1px solid var(--amber-border)', flexShrink: 0 }}>
+                              +৳{t.amount}
+                            </span>
+                          </div>
+                          {t.message && (
+                            <p style={{ fontSize: '13px', color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: '4px' }}>{t.message}</p>
+                          )}
+                          <p style={{ fontSize: '11px', color: 'var(--text-faint)' }}>
+                            {new Date(t.createdAt).toLocaleDateString('bn-BD')} • {t.method}
                           </p>
-                        )}
-                        <p className="text-xs text-gray-600 mt-1">
-                          {new Date(t.createdAt).toLocaleDateString("bn-BD")}
-                        </p>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>
+
           </div>
         </div>
       </div>
