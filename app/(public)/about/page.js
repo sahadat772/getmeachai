@@ -37,10 +37,14 @@ export default function AboutPage() {
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '8px 20px', borderRadius: '99px', fontSize: '13px', fontWeight: 600, marginBottom: '1.5rem', background: 'var(--accent-light)', border: '1px solid var(--accent-border)', color: 'var(--accent)', animation: 'fadeInDown 0.6s ease' }}>
             ☕ আমাদের গল্প
           </div>
-          <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(2rem, 5vw, 3.5rem)', fontWeight: 900, lineHeight: 1.15, color: 'var(--text)', marginBottom: '1.5rem', animation: 'fadeInUp 0.6s ease 0.1s both' }}>
+          <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(2rem, 5vw, 3.5rem)', fontWeight: 800, lineHeight: 1.10, color: 'var(--text)', marginBottom: '1.rem', animation: 'fadeInUp 0.6s ease 0.1s both' }}>
             বাংলাদেশের ক্রিয়েটরদের জন্য{' '}
-            <span style={{ background: 'var(--gradient)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>তৈরি একটি প্ল্যাটফর্ম</span>
+
           </h1>
+          <div className='p-2'>
+
+            <span style={{ background: 'var(--gradient)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontWeight: 900, lineHeight: 1.10, fontSize: 'clamp(2rem, 5vw, 3.5rem)', }}>তৈরি একটি প্ল্যাটফর্ম</span>
+          </div>
           <p style={{ fontSize: 'clamp(1rem, 2vw, 1.15rem)', color: 'var(--text-muted)', lineHeight: 1.85, animation: 'fadeInUp 0.6s ease 0.2s both' }}>
             আমরা বিশ্বাস করি প্রতিটি ক্রিয়েটর তার কাজের মূল্য পাওয়ার যোগ্য।
             Get Me a Chai সেই বিশ্বাস থেকেই জন্ম নিয়েছে — যেখানে ভক্তরা সরাসরি
@@ -223,7 +227,7 @@ export default function AboutPage() {
             </div>
           </div>
         </div>
-        
+
       </section>
 
     </div>

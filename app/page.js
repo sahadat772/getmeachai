@@ -113,7 +113,7 @@ function StatCard({ stat, index }) {
 }
 
 export default function HomePage() {
-  const typed = useTyping(['ক্রিয়েটর', 'ব্লগার', 'ইউটিউবার', 'আর্টিস্ট', 'ডেভেলপার']);
+  const typed = useTyping(['Creator', 'ব্লগার', 'You tuber', 'Artist', 'ডেভেলপার']);
   const [chaiCount, setChaiCount] = useState(1);
   const [activeFeature, setActiveFeature] = useState(null);
 
@@ -129,14 +129,18 @@ export default function HomePage() {
             🇧🇩 বাংলাদেশের ক্রিয়েটরদের জন্য তৈরি
           </div>
 
+
+
           {/* Headline */}
           <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(2.2rem, 6vw, 4.5rem)', fontWeight: 900, lineHeight: 1.1, marginBottom: '1.5rem', color: 'var(--text)', animation: 'fadeInUp 0.7s ease 0.1s both' }}>
             আপনার পছন্দের{' '}
-            <span style={{ background: 'var(--gradient)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', display: 'inline-block', minWidth: '200px' }}>
-              {typed}
-              <span style={{ animation: 'typing 0.8s infinite', color: 'var(--accent)' }}>|</span>
-            </span>
-            <br />কে সাপোর্ট করুন
+            <div className='h-auto'>
+              <span style={{ background: 'var(--gradient)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', display: 'inline-block', minWidth: '200px', }}>
+                {typed}
+                <span style={{ animation: 'typing 0.8s infinite', color: 'var(--accent)' }}>|</span>
+              </span>
+              <br />কে সাপোর্ট করুন
+            </div>
           </h1>
 
           <p style={{ fontSize: 'clamp(1rem, 2.5vw, 1.2rem)', color: 'var(--text-muted)', lineHeight: 1.8, marginBottom: '2.5rem', animation: 'fadeInUp 0.7s ease 0.2s both' }}>

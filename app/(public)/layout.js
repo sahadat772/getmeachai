@@ -7,13 +7,15 @@ import SessionWrapper from "../components/ui/SessionWrapper";
 export default function Publiclayout({ children }) {
     return (
         <>
-            {/* <Navbar /> */}
+
             <main className="flex-1">
                 <SessionWrapper>
+                    <Navbar />
                     {children}
+                    {/* <Footer /> */}
                 </SessionWrapper>
             </main>
-            {/* <Footer /> */}
+
 
         </>
     );
