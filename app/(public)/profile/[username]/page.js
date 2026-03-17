@@ -1,3 +1,5 @@
+"use Client"
+
 import { notFound } from "next/navigation";
 import connectDB from "../../../lib/mongodb";
 import User from "../../../models/User";
